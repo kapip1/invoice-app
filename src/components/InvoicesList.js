@@ -3,7 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { Paid, Pending, Draft } from '../styles/InvoiceStatus';
+import { Paid } from '../styles/InvoiceStatus';
 
 import arrow from '../assets/icon-arrow-right.svg';
 
