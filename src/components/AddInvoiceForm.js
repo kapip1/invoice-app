@@ -8,7 +8,7 @@ const AddInvoiceFormWrapper = styled.div`
 `;
 
 function AddInvoiceForm() {
-    return <AddInvoiceFormWrapper>dawid chuj</AddInvoiceFormWrapper>;
+    return <AddInvoiceFormWrapper></AddInvoiceFormWrapper>;
 }
 
 export default AddInvoiceForm;
