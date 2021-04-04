@@ -19,11 +19,21 @@ const Styles = createGlobalStyle`
     :root {
         --color-primary: ${({ isDarkMode }) =>
             isDarkMode ? '#fff' : 'hsl(228, 29%, 7%)'} ;
-        --color-secondary: hsl(231, 73%, 93%);
+        --color-secondary: ${({ isDarkMode }) =>
+            isDarkMode ? '#fff' : ' hsl(231, 73%, 93%)'};
         --color-background-primary: ${({ isDarkMode }) =>
             isDarkMode ? 'hsl(233, 30%, 21%)' : '#fff'} ;
+        --color-backhround-checkBox: ${({ isDarkMode }) =>
+            isDarkMode ? 'hsl(233, 31%, 17%)' : '#DFE3FA'};
+        --color-background-invoice-link: ${({ isDarkMode }) =>
+            isDarkMode ? 'hsl(233, 31%, 17%)' : '#FFF'};
+        --color-draft: ${({ isDarkMode }) =>
+            isDarkMode ? 'hsl(231, 73%, 93%)' : '#373B53'};
+        --color-bg-addInvoice: ${({ isDarkMode }) =>
+            isDarkMode ? '#141625' : '#fff'} 
+
     }
-    *{
+    *, ::after, ::before{
         margin: 0;
         padding: 0;
         -webkit-font-smoothing: antialiased;
@@ -35,11 +45,15 @@ const Styles = createGlobalStyle`
         font-size: 62.5%;
         transition: 0.3s;
         background-color: ${({ isDarkMode }) =>
-            isDarkMode ? 'hsl(233, 30%, 11%)' : null};
+            isDarkMode ? 'hsl(233, 30%, 11%)' : '#F8F8FB'};
     }
-    button::focus{
-        outline: none;
+    button:focus {
+        outline:0;
     }
+    button {
+        border: none;
+    }
+
 `;
 
 function GlobalStyle() {
@@ -49,3 +63,5 @@ function GlobalStyle() {
 }
 
 export default GlobalStyle;
+
+/* Rectangle */

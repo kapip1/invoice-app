@@ -2,25 +2,26 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import AddInvoice from '../components/AddInvoice';
+import Header from '../components/Header';
+import InvoicesList from '../components/InvoicesList';
 
 const MainWrapper = styled.div`
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -50%);
     display: flex;
+    position: absolute;
+    transform: translateX(-50%);
+    left: 50%;
     flex-direction: column;
     width: 90%;
     max-width: 730px;
-    height: 300px;
-    border: 1px solid grey;
+    min-height: 300px;
+    margin-top: 103px;
 `;
 
 function Main() {
     return (
         <MainWrapper>
-            <AddInvoice />
+            <Header />
+            <InvoicesList />
         </MainWrapper>
     );
 }

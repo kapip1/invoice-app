@@ -13,6 +13,7 @@ import iconMoon from '../assets/icon-moon.svg';
 const SidebarWrapper = styled.div`
     position: fixed;
     display: flex;
+    z-index: 6;
     flex-direction: column;
     justify-content: space-between;
     background-color: #373b53;

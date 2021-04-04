@@ -8,7 +8,7 @@ const PaidWrapper = styled.span`
     border-radius: 8px;
     align-items: center;
     height: 40px;
-    width: 104px;
+    min-width: 104px;
     & span {
         position: absolute;
         transform: translate(-50%, -50%);
@@ -42,12 +42,12 @@ const PendingWrapper = styled(PaidWrapper)`
 `;
 
 const DraftWrapper = styled(PaidWrapper)`
-    background-color: rgba(223, 227, 250, 0.06);
+    background-color: rgba(223, 227, 250, 0.16);
     & span {
-        color: rgba(223, 227, 250);
+        color: var(--color-draft);
     }
     &::after {
-        background-color: rgba(223, 227, 250);
+        background-color: var(--color-draft);
     }
 `;
 
