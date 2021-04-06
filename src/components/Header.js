@@ -171,7 +171,6 @@ function Header() {
         isDarkMode,
         isFilterOpen,
         handleFilterOpen,
-        closeFilter,
         handleIsAddInvoiceOpen,
     } = useContext(AppContext);
 
@@ -179,7 +178,7 @@ function Header() {
 
     const handleDropDownClose = (e) => {
         if (dropdown.current && !dropdown.current.contains(e.target)) {
-            closeFilter();
+            handleFilterOpen('close');
         }
     };
 
@@ -198,7 +197,7 @@ function Header() {
             <HeaderSettingsWrapper>
                 <HeaderFilterWrapper ref={dropdown}>
                     <HeaderFilter
-                        onClick={handleFilterOpen}
+                        onClick={() => handleFilterOpen('toggle')}
                         isFilterOpen={isFilterOpen}
                     >
                         Filter <span>by status</span>
@@ -222,7 +221,7 @@ function Header() {
                         </HeaderItem>
                     </HeaderList>
                 </HeaderFilterWrapper>
-                <HeaderButton onClick={handleIsAddInvoiceOpen}>
+                <HeaderButton onClick={() => handleIsAddInvoiceOpen('open')}>
                     <img src={iconAdd} alt='add icon' /> New{' '}
                     <span> Invoice</span>
                 </HeaderButton>

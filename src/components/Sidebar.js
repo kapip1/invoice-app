@@ -82,11 +82,15 @@ const AvatarLogo = styled.div`
     cursor: pointer;
 `;
 
-const DarkMode = styled.div`
+const DarkMode = styled.button`
     width: 20px;
     height: 20px;
+    transition: 0.3s;
     cursor: pointer;
     background: url(${({ isDarkMode }) => (isDarkMode ? iconSun : iconMoon)});
+    &:focus {
+        transform: rotate(${({ isDarkMode }) => isDarkMode && '-60deg'});
+    }
 `;
 
 function Sidebar() {

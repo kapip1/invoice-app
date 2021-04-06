@@ -30,8 +30,9 @@ const Styles = createGlobalStyle`
         --color-draft: ${({ isDarkMode }) =>
             isDarkMode ? 'hsl(231, 73%, 93%)' : '#373B53'};
         --color-bg-addInvoice: ${({ isDarkMode }) =>
-            isDarkMode ? '#141625' : '#fff'} 
-
+            isDarkMode ? '#141625' : '#fff'};
+        --color-border-input: ${({ isDarkMode }) =>
+            isDarkMode ? '#252945' : '#DFE3FA'}
     }
     *, ::after, ::before{
         margin: 0;

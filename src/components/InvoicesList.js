@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
-import { Paid } from '../styles/InvoiceStatus';
+import { AppContext } from '../AppContext';
+import { Paid, Draft, Pending } from '../styles/InvoiceStatus';
 
 import arrow from '../assets/icon-arrow-right.svg';
 
 const InvoicesListWrapper = styled.ul`
+    transition: 0.3s;
     margin-top: 30px;
 `;
 
@@ -73,41 +75,39 @@ const InvoiceStatus = styled.span`
 `;
 
 function InvoicesList() {
-    return (
-        <InvoicesListWrapper>
-            <InvoiceLink>
-                <Link to='/eew'>
-                    <InvoiceLinkNumber>
-                        <span>#</span>
-                        3432E
-                    </InvoiceLinkNumber>
-                    <InvoiceName>Kacper Negro</InvoiceName>
-                    <InvoiceDate>Due 14 Oct 2021</InvoiceDate>
-                    <InvoicePrice>$1,800.9</InvoicePrice>
-                    <InvoiceStatus>
-                        <Paid />
-                        <img src={arrow} alt='' />
-                    </InvoiceStatus>
-                </Link>
-            </InvoiceLink>
-            <InvoiceLink>
-                <Link to='/eew'>
-                    <InvoiceLinkNumber>
-                        <span>#</span>
-                        3432E
-                    </InvoiceLinkNumber>
-                    <InvoiceName>Kacper Negro</InvoiceName>
-                    <InvoiceDate>Due 14 Oct 2021</InvoiceDate>
-                    <InvoicePrice>$1,800.9</InvoicePrice>
+    const { data } = useContext(AppContext);
+    const checkStatus = (arg) => {
+        switch (arg) {
+            case 'paid':
+                return <Paid />;
+            case 'draft':
+                return <Draft />;
+            case 'pending':
+                return <Pending />;
+            default:
+                throw Error();
+        }
+    };
+    console.log(data.reverse());
+    const invoices = data.map((invoice) => (
+        <InvoiceLink key={invoice.id}>
+            <Link to={`/invoice/${invoice.id}`}>
+                <InvoiceLinkNumber>
+                    <span>#</span>
+                    {invoice.id}
+                </InvoiceLinkNumber>
+                <InvoiceName>{invoice.name}</InvoiceName>
+                <InvoiceDate>{invoice.date}</InvoiceDate>
+                <InvoicePrice>${invoice.price}</InvoicePrice>
+                <InvoiceStatus>
+                    {checkStatus(invoice.status)}
+                    <img src={arrow} alt='' />
+                </InvoiceStatus>
+            </Link>
+        </InvoiceLink>
+    ));
 
-                    <InvoiceStatus>
-                        <Paid />
-                        <img src={arrow} alt='' />
-                    </InvoiceStatus>
-                </Link>
-            </InvoiceLink>
-        </InvoicesListWrapper>
-    );
+    return <InvoicesListWrapper>{invoices.reverse()}</InvoicesListWrapper>;
 }
 
 export default InvoicesList;

@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import styled, { css } from 'styled-components';
+import { AppContext } from '../AppContext';
 
 import AddInvoiceForm from './AddInvoiceForm';
 
 const AddInvoiceWrapper = styled.div`
-    position: absolute;
+    position: fixed;
     z-index: 5;
     transition: 0.5s;
     left: ${({ isAddInvoiceOpen }) => (isAddInvoiceOpen ? '0' : '-120%')};
-    width: 616px;
     height: 100vh;
     background-color: var(--color-bg-addInvoice);
     border-radius: 0 20px 20px 0;
     padding: 0 0 0 103px;
+    width: 750px;
     @media (max-width: 1150px) {
         padding: 0;
         top: 80px;
@@ -25,7 +26,7 @@ const AddInvoiceWrapper = styled.div`
     }
 `;
 const AddInvoiceBg = styled.div`
-    position: absolute;
+    position: fixed;
     opacity: 0;
     visibility: hidden;
     z-index: 4;
@@ -44,7 +45,9 @@ const AddInvoiceBg = styled.div`
     background-color: black;
 `;
 
-function AddInvoice({ isAddInvoiceOpen, handleisAddInvoiceClose }) {
+function AddInvoice() {
+    const { isAddInvoiceOpen, handleIsAddInvoiceOpen } = useContext(AppContext);
+
     return (
         <>
             <AddInvoiceWrapper isAddInvoiceOpen={isAddInvoiceOpen}>
@@ -52,7 +55,7 @@ function AddInvoice({ isAddInvoiceOpen, handleisAddInvoiceClose }) {
             </AddInvoiceWrapper>
             <AddInvoiceBg
                 isAddInvoiceOpen={isAddInvoiceOpen}
-                onClick={handleisAddInvoiceClose}
+                onClick={() => handleIsAddInvoiceOpen('close')}
             />
         </>
     );

@@ -1,26 +1,23 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { AppContext } from './AppContext';
 import AddInvoice from './components/AddInvoice';
 import GlobalStyle from './styles/GlobalStyle';
 import Sidebar from './components/Sidebar';
 import Main from './layouts/Main';
+import Invoice from './components/Invoice';
 
 function App() {
-    const { isAddInvoiceOpen, handleisAddInvoiceClose } = useContext(
-        AppContext
-    );
     return (
         <Router>
             <GlobalStyle />
             <Sidebar />
-            <AddInvoice
-                isAddInvoiceOpen={isAddInvoiceOpen}
-                handleisAddInvoiceClose={handleisAddInvoiceClose}
-            />
-            <Main />
+            <Switch>
+                <Route path='/' exact component={Main} />
+                <Route path='/invoice/:id' component={Invoice} />
+            </Switch>
+            <AddInvoice />
         </Router>
     );
 }
