@@ -66,3 +66,15 @@ export const Draft = () => (
         <span>Draft</span>
     </DraftWrapper>
 );
+export const checkStatus = (arg) => {
+    switch (arg) {
+        case 'paid':
+            return <Paid />;
+        case 'draft':
+            return <Draft />;
+        case 'pending':
+            return <Pending />;
+        default:
+            throw Error();
+    }
+};

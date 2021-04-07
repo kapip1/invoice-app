@@ -20,7 +20,7 @@ const Styles = createGlobalStyle`
         --color-primary: ${({ isDarkMode }) =>
             isDarkMode ? '#fff' : 'hsl(228, 29%, 7%)'} ;
         --color-secondary: ${({ isDarkMode }) =>
-            isDarkMode ? '#fff' : ' hsl(231, 73%, 93%)'};
+            isDarkMode ? '#DFE3FA' : ' hsl(231, 73%, 93%)'};
         --color-background-primary: ${({ isDarkMode }) =>
             isDarkMode ? 'hsl(233, 30%, 21%)' : '#fff'} ;
         --color-backhround-checkBox: ${({ isDarkMode }) =>

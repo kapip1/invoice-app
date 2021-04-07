@@ -27,7 +27,7 @@ const AddInvoiceTitle = styled.span`
 function AddInvoiceForm() {
     const event = new Date();
 
-    const { getInvoice } = useContext(AppContext);
+    const { getInvoice, handleIsAddInvoiceOpen } = useContext(AppContext);
 
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
@@ -47,6 +47,10 @@ function AddInvoiceForm() {
                 date: event.toDateString(),
                 list: [...items],
             });
+            setName('');
+            setPrice('');
+            setItems([]);
+            handleIsAddInvoiceOpen('close');
         }
     };
 
@@ -55,7 +59,9 @@ function AddInvoiceForm() {
             ...items,
             {
                 id: uuidv4(),
-                value: '',
+                name: '',
+                quantity: '',
+                price: '',
             },
         ]);
     };
@@ -84,9 +90,51 @@ function AddInvoiceForm() {
             </form>
             <ul>
                 {items.map((item) => {
+                    const copyItems = [...items];
+                    const index = copyItems.findIndex(
+                        (el) => el.id === item.id
+                    );
+                    const handleNameInput = (e) => {
+                        copyItems[index].name = e.target.value;
+                        setItems(copyItems);
+                    };
+                    const handleQuantityInput = (e) => {
+                        copyItems[index].quantity = e.target.value;
+                        setItems(copyItems);
+                    };
+                    const handlePriceInput = (e) => {
+                        copyItems[index].price = e.target.value;
+                        setItems(copyItems);
+                    };
+
+                    const handleButtonRemove = () => {
+                        const filteredArr = copyItems.filter(
+                            (el) => item.id !== el.id
+                        );
+                        setItems(filteredArr);
+                    };
                     return (
                         <li key={item.id}>
-                            <input type='text' />
+                            <input
+                                type='text'
+                                value={item.name}
+                                onChange={handleNameInput}
+                            />
+                            <input
+                                type='number'
+                                value={item.quantity}
+                                onChange={handleQuantityInput}
+                            />
+                            <input
+                                type='number'
+                                value={item.price}
+                                onChange={handlePriceInput}
+                            />
+                            <input
+                                type='text'
+                                value={item.price * item.quantity}
+                            />
+                            <button onClick={handleButtonRemove}>remove</button>
                         </li>
                     );
                 })}
