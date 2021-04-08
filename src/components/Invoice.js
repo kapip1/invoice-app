@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { Link } from 'react-router-dom';
+import NumberFormat from 'react-number-format';
 
 import { AppContext } from '../AppContext';
 import {
@@ -20,6 +21,18 @@ import {
     InvoiceNumber,
     BillMain,
     TextPrimaryLarge,
+    DetailsWrapper,
+    ListItems,
+    ListAmountDue,
+    ItemWrapper,
+    ItemDetails,
+    ItemDetailsAmount,
+    ItemDetailsTotal,
+    ItemTextPrimary,
+    ItemTextSecondary,
+    HeaderItem,
+    HeaderItemText,
+    HeaderItemTotal,
 } from './Invoice.style';
 import { checkStatus } from '../styles/InvoiceStatus';
 import Error404 from './Error404';
@@ -27,6 +40,8 @@ import Error404 from './Error404';
 import arrow from '../assets/icon-arrow-left.svg';
 
 function Invoice({ match }) {
+    // const [totalPrice, setTotalPrice] = useState('');
+
     const { data, handleIsAddInvoiceOpen, isDarkMode } = useContext(AppContext);
 
     const currentInvoice = data.filter(
@@ -52,13 +67,14 @@ function Invoice({ match }) {
                             <HeaderPanel>
                                 <PanelStatus>
                                     <TextSecondary>Status</TextSecondary>
-                                    {checkStatus('pending')}
+                                    {checkStatus(currentInvoice[0].status)}
                                 </PanelStatus>
                                 <PanelButtons>
                                     <InvoiceButton
                                         color={'var(--color-draft)'}
                                         isDarkMode={isDarkMode}
                                         edit
+                                        onClick={handleEditBtn}
                                     >
                                         Edit
                                     </InvoiceButton>
@@ -77,7 +93,7 @@ function Invoice({ match }) {
                                     <BillItem>
                                         <InvoiceNumber>
                                             <span>#</span>
-                                            XM3214
+                                            {currentInvoice[0].id}
                                         </InvoiceNumber>
                                         <TextSecondary>
                                             Graphic Design
@@ -112,7 +128,7 @@ function Invoice({ match }) {
                                     <BillItem>
                                         <TextSecondary>Bill To</TextSecondary>
                                         <TextPrimaryLarge>
-                                            Alex Grim
+                                            {currentInvoice[0].name}
                                         </TextPrimaryLarge>
                                         <TextSecondary>
                                             84 Church Way
@@ -131,8 +147,83 @@ function Invoice({ match }) {
                                     </BillItem>
                                 </BillMain>
                             </BillWrapper>
+                            <DetailsWrapper>
+                                <ListItems isDarkMode={isDarkMode}>
+                                    <HeaderItem>
+                                        <ItemDetails>
+                                            <HeaderItemText>
+                                                Item Name
+                                            </HeaderItemText>
+                                            <ItemDetailsAmount>
+                                                <HeaderItemText>
+                                                    QTY.
+                                                </HeaderItemText>
+                                                <HeaderItemText>
+                                                    Price
+                                                </HeaderItemText>
+                                            </ItemDetailsAmount>
+                                        </ItemDetails>
+                                        <HeaderItemTotal>Total</HeaderItemTotal>
+                                    </HeaderItem>
+                                    {currentInvoice[0].list.map((item) => (
+                                        <ItemWrapper>
+                                            <ItemDetails>
+                                                <ItemTextPrimary>
+                                                    {item.name}
+                                                </ItemTextPrimary>
+                                                <ItemDetailsAmount>
+                                                    <ItemTextSecondary className='qty'>
+                                                        <NumberFormat
+                                                            value={
+                                                                item.quantity
+                                                            }
+                                                            displayType={'text'}
+                                                            thousandSeparator={
+                                                                true
+                                                            }
+                                                        />
+                                                        <span className='qty'>
+                                                            x
+                                                        </span>
+                                                    </ItemTextSecondary>
+                                                    <ItemTextSecondary>
+                                                        <NumberFormat
+                                                            value={item.price}
+                                                            displayType={'text'}
+                                                            thousandSeparator={
+                                                                true
+                                                            }
+                                                            prefix={'£'}
+                                                        />
+                                                    </ItemTextSecondary>
+                                                </ItemDetailsAmount>
+                                            </ItemDetails>
+                                            <ItemDetailsTotal>
+                                                <NumberFormat
+                                                    value={item.total}
+                                                    displayType={'text'}
+                                                    thousandSeparator={true}
+                                                    prefix={'£'}
+                                                />
+                                            </ItemDetailsTotal>
+                                        </ItemWrapper>
+                                    ))}
+                                </ListItems>
+                                <ListAmountDue isDarkMode={isDarkMode}>
+                                    <p>Amount Due</p>
+                                    <span>
+                                        <NumberFormat
+                                            value={currentInvoice[0].price}
+                                            displayType={'text'}
+                                            thousandSeparator={true}
+                                            prefix={'£'}
+                                        />
+                                    </span>
+                                </ListAmountDue>
+                            </DetailsWrapper>
                         </InvoiceMain>
                     </InvoiceWrapper>
+                    )
                 </>
             ) : (
                 <Error404 />

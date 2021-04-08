@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import NumberFormat from 'react-number-format';
 
 import { AppContext } from '../AppContext';
 import { checkStatus } from '../styles/InvoiceStatus';
@@ -57,7 +58,9 @@ const InvoiceDate = styled.span`
 const InvoiceName = styled.span`
     width: 120px;
     color: var(--color-secondary);
-    text-align: right;
+    @media (max-width: 576px) {
+        text-align: right;
+    }
 `;
 
 const InvoicePrice = styled.span`
@@ -75,7 +78,6 @@ const InvoiceStatus = styled.span`
     justify-content: space-between;
     display: flex;
     align-items: center;
-    /* margin-left: 5px; */
     & span.price {
         display: none;
     }
@@ -107,7 +109,14 @@ function InvoicesList() {
                 </InvoiceLinkNumber>
                 <InvoiceName>{invoice.name}</InvoiceName>
                 <InvoiceDate>{invoice.date}</InvoiceDate>
-                <InvoicePrice>${invoice.price}</InvoicePrice>
+                <InvoicePrice>
+                    <NumberFormat
+                        value={invoice.price}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        prefix={'£'}
+                    />
+                </InvoicePrice>
                 <InvoiceStatus>
                     <InvoicePrice className='price'>
                         ${invoice.price}

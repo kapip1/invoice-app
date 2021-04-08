@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import styled from 'styled-components';
 import { invoiceNumber } from '../logic/InvoiceNumber';
 
-import ItemList from './ItemList';
 import { AppContext } from '../AppContext';
 
 const AddInvoiceFormWrapper = styled.div`
@@ -42,7 +41,7 @@ function AddInvoiceForm() {
             getInvoice({
                 id: invoiceNumber(),
                 name,
-                price,
+                price: totalPrice(),
                 status,
                 date: event.toDateString(),
                 list: [...items],
@@ -54,6 +53,15 @@ function AddInvoiceForm() {
         }
     };
 
+    const totalPrice = () => {
+        const amountsList = items.map((item) => item.total);
+        let totalAmount = 0;
+        for (let i = 0; i < amountsList.length; i++) {
+            totalAmount = totalAmount + amountsList[i];
+        }
+        return totalAmount;
+    };
+
     const handleInvoiceAdd = () => {
         setItems([
             ...items,
@@ -62,6 +70,7 @@ function AddInvoiceForm() {
                 name: '',
                 quantity: '',
                 price: '',
+                total: '',
             },
         ]);
     };
@@ -71,6 +80,7 @@ function AddInvoiceForm() {
     return (
         <AddInvoiceFormWrapper>
             <AddInvoiceTitle>New Invoice</AddInvoiceTitle>
+            <button onClick={totalPrice}>eweqewqeqweqw</button>
             <form onSubmit={handleForm}>
                 <label htmlFor='name'>Siema</label>
                 <input
@@ -94,16 +104,21 @@ function AddInvoiceForm() {
                     const index = copyItems.findIndex(
                         (el) => el.id === item.id
                     );
+
                     const handleNameInput = (e) => {
                         copyItems[index].name = e.target.value;
                         setItems(copyItems);
                     };
                     const handleQuantityInput = (e) => {
                         copyItems[index].quantity = e.target.value;
+                        copyItems[index].total =
+                            copyItems[index].price * copyItems[index].quantity;
                         setItems(copyItems);
                     };
                     const handlePriceInput = (e) => {
                         copyItems[index].price = e.target.value;
+                        copyItems[index].total =
+                            copyItems[index].price * copyItems[index].quantity;
                         setItems(copyItems);
                     };
 
@@ -119,19 +134,23 @@ function AddInvoiceForm() {
                                 type='text'
                                 value={item.name}
                                 onChange={handleNameInput}
+                                placeholder='item name'
                             />
                             <input
                                 type='number'
                                 value={item.quantity}
+                                placeholder='qty'
                                 onChange={handleQuantityInput}
                             />
                             <input
                                 type='number'
                                 value={item.price}
+                                placeholder='price'
                                 onChange={handlePriceInput}
                             />
                             <input
                                 type='text'
+                                placeholder='total'
                                 value={item.price * item.quantity}
                             />
                             <button onClick={handleButtonRemove}>remove</button>

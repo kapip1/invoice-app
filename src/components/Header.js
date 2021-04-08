@@ -172,6 +172,7 @@ function Header() {
         isFilterOpen,
         handleFilterOpen,
         handleIsAddInvoiceOpen,
+        data,
     } = useContext(AppContext);
 
     const dropdown = useRef();
@@ -192,7 +193,9 @@ function Header() {
         <HeaderWrapper>
             <HeaderContentWrapper>
                 <HeaderTitle>Invoices</HeaderTitle>
-                <HeaderCount>There are 8 total invoices</HeaderCount>
+                <HeaderCount>
+                    There are {data.length} total invoices
+                </HeaderCount>
             </HeaderContentWrapper>
             <HeaderSettingsWrapper>
                 <HeaderFilterWrapper ref={dropdown}>
