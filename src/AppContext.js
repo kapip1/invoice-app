@@ -66,6 +66,7 @@ const AppProvider = ({ children }) => {
 
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [filterType, setFilterType] = useState('all');
     const [isAddInvoiceOpen, setIsAddInvoiceOpen] = useState(false);
     const [data, setDate] = useState(defData);
 
@@ -98,18 +99,26 @@ const AppProvider = ({ children }) => {
     const getInvoice = (invoice) => {
         setDate([...data, { ...invoice }]);
     };
+    const getFilterType = (type) => {
+        const getTrueFilter = type.filter((item) => item.active === true);
+        getTrueFilter.length
+            ? setFilterType(getTrueFilter[0].id)
+            : setFilterType('all');
+    };
 
     return (
         <AppContext.Provider
             value={{
-                isDarkMode,
-                getInvoice,
-                handleIsAddInvoiceOpen,
                 isAddInvoiceOpen,
-                handleDarkMode,
+                isDarkMode,
                 isFilterOpen,
-                closeFilter,
+                getInvoice,
+                getFilterType,
+                handleDarkMode,
+                handleIsAddInvoiceOpen,
                 handleFilterOpen,
+                closeFilter,
+                filterType,
                 data,
             }}
         >

@@ -166,7 +166,7 @@ function Invoice({ match }) {
                                         <HeaderItemTotal>Total</HeaderItemTotal>
                                     </HeaderItem>
                                     {currentInvoice[0].list.map((item) => (
-                                        <ItemWrapper>
+                                        <ItemWrapper key={item.id}>
                                             <ItemDetails>
                                                 <ItemTextPrimary>
                                                     {item.name}

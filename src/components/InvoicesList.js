@@ -97,10 +97,14 @@ const InvoiceStatus = styled.span`
 `;
 
 function InvoicesList() {
-    const { data } = useContext(AppContext);
+    const { data, filterType } = useContext(AppContext);
 
-    console.log(data.reverse());
-    const invoices = data.map((invoice) => (
+    const filteredData =
+        filterType === 'all'
+            ? data
+            : data.filter((item) => item.status === filterType);
+
+    const invoices = filteredData.map((invoice) => (
         <InvoiceLink key={invoice.id}>
             <Link to={`/invoice/${invoice.id}`}>
                 <InvoiceLinkNumber>

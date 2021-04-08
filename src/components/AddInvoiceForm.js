@@ -75,12 +75,9 @@ function AddInvoiceForm() {
         ]);
     };
 
-    console.log(items);
-
     return (
         <AddInvoiceFormWrapper>
             <AddInvoiceTitle>New Invoice</AddInvoiceTitle>
-            <button onClick={totalPrice}>eweqewqeqweqw</button>
             <form onSubmit={handleForm}>
                 <label htmlFor='name'>Siema</label>
                 <input

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useEffect } from 'react';
+import React, { useContext, useRef, useEffect, useState } from 'react';
 
 import styled, { css } from 'styled-components';
 
@@ -85,7 +85,7 @@ const HeaderButton = styled.button`
     }
 `;
 
-const HeaderList = styled.ul`
+const HeaderList = styled.div`
     display: flex;
     opacity: 0;
     visibility: hidden;
@@ -114,7 +114,7 @@ const HeaderList = styled.ul`
         isDarkMode ? null : '0px 10px 20px rgba(72, 84, 159, 0.25)'};
 `;
 
-const HeaderItem = styled.li`
+const HeaderItem = styled.label`
     display: flex;
     cursor: pointer;
     &:hover {
@@ -166,6 +166,24 @@ const FilterCheckBox = styled.input`
         `}
 `;
 
+const defFilters = [
+    {
+        id: 'paid',
+        name: 'Paid',
+        active: false,
+    },
+    {
+        id: 'pending',
+        name: 'Pending',
+        active: true,
+    },
+    {
+        id: 'draft',
+        name: 'Draft',
+        active: false,
+    },
+];
+
 function Header() {
     const {
         isDarkMode,
@@ -173,6 +191,7 @@ function Header() {
         handleFilterOpen,
         handleIsAddInvoiceOpen,
         data,
+        getFilterType,
     } = useContext(AppContext);
 
     const dropdown = useRef();
@@ -181,6 +200,21 @@ function Header() {
         if (dropdown.current && !dropdown.current.contains(e.target)) {
             handleFilterOpen('close');
         }
+    };
+
+    const [filters, setFilters] = useState(defFilters);
+
+    const handleCheckBoxClick = (e) => {
+        const filtersCopy = [...filters];
+        const id = e.target.id;
+        const currentFilter = filtersCopy.filter((item) => item.id === id);
+        for (let i = 0; i < filtersCopy.length; i++) {
+            filtersCopy[i].id !== currentFilter[0].id
+                ? (filtersCopy[i].active = false)
+                : (filtersCopy[i].active = !filtersCopy[i].active);
+        }
+        setFilters(filtersCopy);
+        getFilterType(filters);
     };
 
     useEffect(() => {
@@ -210,18 +244,17 @@ function Header() {
                         isDarkMode={isDarkMode}
                         isFilterOpen={isFilterOpen}
                     >
-                        <HeaderItem>
-                            <FilterCheckBox type='checkbox' checked={false} />
-                            <FilterTitle>Paid</FilterTitle>
-                        </HeaderItem>
-                        <HeaderItem>
-                            <FilterCheckBox type='checkbox' checked={true} />
-                            <FilterTitle>Pending</FilterTitle>
-                        </HeaderItem>
-                        <HeaderItem>
-                            <FilterCheckBox type='checkbox' checked={false} />
-                            <FilterTitle>Draft</FilterTitle>
-                        </HeaderItem>
+                        {filters.map((filter) => (
+                            <HeaderItem key={filter.id}>
+                                <FilterCheckBox
+                                    type='checkbox'
+                                    checked={filter.active}
+                                    id={filter.id}
+                                    onChange={handleCheckBoxClick}
+                                />
+                                <FilterTitle>{filter.name}</FilterTitle>
+                            </HeaderItem>
+                        ))}
                     </HeaderList>
                 </HeaderFilterWrapper>
                 <HeaderButton onClick={() => handleIsAddInvoiceOpen('open')}>
