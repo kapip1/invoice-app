@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import NumberFormat from 'react-number-format';
 
 import { AppContext } from '../AppContext';
+
+import InvoiceAlert from './InvoiceAlert';
+
 import {
     InvoiceWrapper,
     InvoiceHeader,
@@ -40,9 +43,10 @@ import Error404 from './Error404';
 import arrow from '../assets/icon-arrow-left.svg';
 
 function Invoice({ match }) {
-    // const [totalPrice, setTotalPrice] = useState('');
-
-    const { data, handleIsAddInvoiceOpen, isDarkMode } = useContext(AppContext);
+    const { data, handleIsAddInvoiceOpen, isDarkMode, changeData } = useContext(
+        AppContext
+    );
+    const [isAlert, setIsAlert] = useState(false);
 
     const currentInvoice = data.filter(
         (invoice) => invoice.id === match.params.id
@@ -51,11 +55,39 @@ function Invoice({ match }) {
     const handleEditBtn = () => {
         handleIsAddInvoiceOpen('open');
     };
+    const isAlertToggle = () => {
+        setIsAlert((prev) => !prev);
+    };
+    const handleDeleteBtn = () => {
+        isAlertToggle();
+    };
+    const handleConfirmDelete = () => {
+        changeData(
+            data.filter((invoice) => invoice.id !== currentInvoice[0].id)
+        );
+    };
+    const handleMarkPaid = () => {
+        const copyData = [...data];
+        const index = copyData.findIndex(
+            (item) => item.id === currentInvoice[0].id
+        );
+        copyData[index].status = 'paid';
+        changeData(copyData);
+
+        //dodane jak bylem pijany
+    };
 
     return (
         <>
             {currentInvoice.length ? (
                 <>
+                    <InvoiceAlert
+                        isAlert={isAlert}
+                        isAlertToggle={isAlertToggle}
+                        isDarkMode={isDarkMode}
+                        invoiceId={currentInvoice[0].id}
+                        handleConfirmDelete={handleConfirmDelete}
+                    />
                     <InvoiceWrapper>
                         <InvoiceHeader>
                             <GoBackHeader>
@@ -78,12 +110,22 @@ function Invoice({ match }) {
                                     >
                                         Edit
                                     </InvoiceButton>
-                                    <InvoiceButton color={'#EC5757'}>
+                                    <InvoiceButton
+                                        color={'#EC5757'}
+                                        onClick={handleDeleteBtn}
+                                    >
                                         Delete
                                     </InvoiceButton>
-                                    <InvoiceButton color={'#7C5DFA'}>
-                                        Mark as Paid
-                                    </InvoiceButton>
+                                    {(currentInvoice[0].status === 'draft' ||
+                                        currentInvoice[0].status ===
+                                            'pending') && (
+                                        <InvoiceButton
+                                            color={'#7C5DFA'}
+                                            onClick={handleMarkPaid}
+                                        >
+                                            Mark as Paid
+                                        </InvoiceButton>
+                                    )}
                                 </PanelButtons>
                             </HeaderPanel>
                         </InvoiceHeader>

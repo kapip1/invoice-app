@@ -6,6 +6,7 @@ import NumberFormat from 'react-number-format';
 
 import { AppContext } from '../AppContext';
 import { checkStatus } from '../styles/InvoiceStatus';
+import EmptyList from './EmptyList';
 
 import arrow from '../assets/icon-arrow-right.svg';
 
@@ -132,7 +133,11 @@ function InvoicesList() {
         </InvoiceLink>
     ));
 
-    return <InvoicesListWrapper>{invoices.reverse()}</InvoicesListWrapper>;
+    return (
+        <InvoicesListWrapper>
+            {invoices.length ? invoices.reverse() : <EmptyList />}
+        </InvoicesListWrapper>
+    );
 }
 
 export default InvoicesList;

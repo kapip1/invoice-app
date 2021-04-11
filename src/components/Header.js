@@ -175,7 +175,7 @@ const defFilters = [
     {
         id: 'pending',
         name: 'Pending',
-        active: true,
+        active: false,
     },
     {
         id: 'draft',

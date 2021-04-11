@@ -68,7 +68,7 @@ const AppProvider = ({ children }) => {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [filterType, setFilterType] = useState('all');
     const [isAddInvoiceOpen, setIsAddInvoiceOpen] = useState(false);
-    const [data, setDate] = useState(defData);
+    const [data, setData] = useState(defData);
 
     const handleDarkMode = () => {
         setIsDarkMode((prev) => !prev);
@@ -97,8 +97,12 @@ const AppProvider = ({ children }) => {
         }
     };
     const getInvoice = (invoice) => {
-        setDate([...data, { ...invoice }]);
+        setData([...data, { ...invoice }]);
     };
+    const changeData = (newData) => {
+        setData(newData);
+    };
+
     const getFilterType = (type) => {
         const getTrueFilter = type.filter((item) => item.active === true);
         getTrueFilter.length
@@ -120,6 +124,7 @@ const AppProvider = ({ children }) => {
                 closeFilter,
                 filterType,
                 data,
+                changeData,
             }}
         >
             {children}

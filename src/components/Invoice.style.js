@@ -169,7 +169,7 @@ export const ListAmountDue = styled.div`
     background-color: ${({ isDarkMode }) =>
         isDarkMode ? '#0C0E16' : '#373B53'};
     & span {
-        font-size: 2.4rem;
+        font-size: 2.1rem;
         font-weight: 700;
     }
     & p {

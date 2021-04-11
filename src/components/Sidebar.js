@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
 
 import { AppContext } from '../AppContext';
 
@@ -103,7 +102,7 @@ function Sidebar() {
             </LogoContainer>
             <SettingSection>
                 <DarkMode onClick={handleDarkMode} isDarkMode={isDarkMode} />
-                <AvatarLogo as={motion.div} whileHover={{ scale: 1.2 }} />
+                <AvatarLogo />
             </SettingSection>
         </SidebarWrapper>
     );
