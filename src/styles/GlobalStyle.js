@@ -20,7 +20,7 @@ const Styles = createGlobalStyle`
         --color-primary: ${({ isDarkMode }) =>
             isDarkMode ? '#fff' : 'hsl(228, 29%, 7%)'} ;
         --color-secondary: ${({ isDarkMode }) =>
-            isDarkMode ? '#DFE3FA' : ' hsl(231, 73%, 93%)'};
+            isDarkMode ? 'hsl(231, 73%, 93%)' : 'hsl(231, 37%, 63%)'};
         --color-background-primary: ${({ isDarkMode }) =>
             isDarkMode ? 'hsl(233, 30%, 21%)' : '#fff'} ;
         --color-backhround-checkBox: ${({ isDarkMode }) =>
@@ -32,7 +32,13 @@ const Styles = createGlobalStyle`
         --color-bg-addInvoice: ${({ isDarkMode }) =>
             isDarkMode ? '#141625' : '#fff'};
         --color-border-input: ${({ isDarkMode }) =>
-            isDarkMode ? '#252945' : '#DFE3FA'}
+            isDarkMode ? '#252945' : '#DFE3FA'};
+        --color-totalPrice: ${({ isDarkMode }) =>
+            isDarkMode ? 'hsl(231, 20%, 61%)' : 'hsl(231, 73%, 93%)'};
+        --color-inputBackground: ${({ isDarkMode }) =>
+            isDarkMode ? '#1E2139' : '#F9FAFE'};
+        --color-buttonForm: ${({ isDarkMode }) =>
+            isDarkMode ? '#252945' : '#F9FAFE'};
     }
     *, ::after, ::before{
         margin: 0;

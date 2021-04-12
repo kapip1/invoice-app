@@ -1,16 +1,18 @@
 import React, { useContext } from 'react';
 
 import styled, { css } from 'styled-components';
-import { AppContext } from '../AppContext';
 
+import { AppContext } from '../AppContext';
 import AddInvoiceForm from './AddInvoiceForm';
+import InvoiceForm from './InvoiceForm';
 
 const AddInvoiceWrapper = styled.div`
     position: fixed;
     z-index: 5;
+    top: 0;
     transition: 0.5s;
-    left: ${({ isAddInvoiceOpen }) => (isAddInvoiceOpen ? '0' : '-120%')};
-    height: 100vh;
+    left: ${({ isSliderOpen }) => (isSliderOpen ? '0' : '-120%')};
+    min-height: 100vh;
     background-color: var(--color-bg-addInvoice);
     border-radius: 0 20px 20px 0;
     padding: 0 0 0 103px;
@@ -31,8 +33,8 @@ const AddInvoiceBg = styled.div`
     visibility: hidden;
     z-index: 4;
     transition: 0.5s;
-    ${({ isAddInvoiceOpen }) =>
-        isAddInvoiceOpen &&
+    ${({ isSliderOpen }) =>
+        isSliderOpen &&
         css`
             visibility: visible;
             opacity: 0.5;
@@ -45,20 +47,21 @@ const AddInvoiceBg = styled.div`
     background-color: black;
 `;
 
-function AddInvoice() {
-    const { isAddInvoiceOpen, handleIsAddInvoiceOpen } = useContext(AppContext);
+function InvoiceSlider() {
+    const { isSliderOpen, handleIsSliderOpen } = useContext(AppContext);
 
     return (
         <>
-            <AddInvoiceWrapper isAddInvoiceOpen={isAddInvoiceOpen}>
-                <AddInvoiceForm />
+            <AddInvoiceWrapper isSliderOpen={isSliderOpen}>
+                {/* <AddInvoiceForm /> */}
+                <InvoiceForm />
             </AddInvoiceWrapper>
             <AddInvoiceBg
-                isAddInvoiceOpen={isAddInvoiceOpen}
-                onClick={() => handleIsAddInvoiceOpen('close')}
+                isSliderOpen={isSliderOpen}
+                onClick={() => handleIsSliderOpen('close')}
             />
         </>
     );
 }
 
-export default AddInvoice;
+export default InvoiceSlider;

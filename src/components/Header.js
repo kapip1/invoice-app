@@ -189,9 +189,10 @@ function Header() {
         isDarkMode,
         isFilterOpen,
         handleFilterOpen,
-        handleIsAddInvoiceOpen,
+        handleIsSliderOpen,
         data,
         getFilterType,
+        filterType,
     } = useContext(AppContext);
 
     const dropdown = useRef();
@@ -223,12 +224,21 @@ function Header() {
             document.removeEventListener('mousedown', handleDropDownClose);
     });
 
+    const listLength = () => {
+        const lengthData = data.filter((item) => item.status === filterType);
+
+        const resultLength =
+            filterType === 'total' ? data.length : lengthData.length;
+
+        return resultLength;
+    };
+
     return (
         <HeaderWrapper>
             <HeaderContentWrapper>
                 <HeaderTitle>Invoices</HeaderTitle>
                 <HeaderCount>
-                    There are {data.length} total invoices
+                    There are {listLength()} {filterType} invoices
                 </HeaderCount>
             </HeaderContentWrapper>
             <HeaderSettingsWrapper>
@@ -257,7 +267,7 @@ function Header() {
                         ))}
                     </HeaderList>
                 </HeaderFilterWrapper>
-                <HeaderButton onClick={() => handleIsAddInvoiceOpen('open')}>
+                <HeaderButton onClick={() => handleIsSliderOpen('open')}>
                     <img src={iconAdd} alt='add icon' /> New{' '}
                     <span> Invoice</span>
                 </HeaderButton>

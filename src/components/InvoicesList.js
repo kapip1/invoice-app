@@ -101,7 +101,7 @@ function InvoicesList() {
     const { data, filterType } = useContext(AppContext);
 
     const filteredData =
-        filterType === 'all'
+        filterType === 'total'
             ? data
             : data.filter((item) => item.status === filterType);
 

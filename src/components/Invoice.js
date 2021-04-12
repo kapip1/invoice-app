@@ -43,7 +43,7 @@ import Error404 from './Error404';
 import arrow from '../assets/icon-arrow-left.svg';
 
 function Invoice({ match }) {
-    const { data, handleIsAddInvoiceOpen, isDarkMode, changeData } = useContext(
+    const { data, handleIsSliderOpen, isDarkMode, changeData } = useContext(
         AppContext
     );
     const [isAlert, setIsAlert] = useState(false);
@@ -53,7 +53,7 @@ function Invoice({ match }) {
     );
 
     const handleEditBtn = () => {
-        handleIsAddInvoiceOpen('open');
+        handleIsSliderOpen('open');
     };
     const isAlertToggle = () => {
         setIsAlert((prev) => !prev);
@@ -73,8 +73,6 @@ function Invoice({ match }) {
         );
         copyData[index].status = 'paid';
         changeData(copyData);
-
-        //dodane jak bylem pijany
     };
 
     return (

@@ -29,9 +29,9 @@ function AddInvoiceForm() {
     const { getInvoice, handleIsAddInvoiceOpen } = useContext(AppContext);
 
     const [name, setName] = useState('');
-    const [price, setPrice] = useState('');
     const [items, setItems] = useState([]);
     const [status, setStatus] = useState('pending');
+    const [price, setPrice] = useState('');
 
     const handleForm = (e) => {
         e.preventDefault();

@@ -66,8 +66,8 @@ const AppProvider = ({ children }) => {
 
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [filterType, setFilterType] = useState('all');
-    const [isAddInvoiceOpen, setIsAddInvoiceOpen] = useState(false);
+    const [filterType, setFilterType] = useState('total');
+    const [isSliderOpen, seIsSliderOpen] = useState(false);
     const [data, setData] = useState(defData);
 
     const handleDarkMode = () => {
@@ -86,12 +86,12 @@ const AppProvider = ({ children }) => {
     const closeFilter = () => {
         setIsFilterOpen(false);
     };
-    const handleIsAddInvoiceOpen = (arg) => {
+    const handleIsSliderOpen = (arg) => {
         switch (arg) {
             case 'open':
-                return setIsAddInvoiceOpen(true);
+                return seIsSliderOpen(true);
             case 'close':
-                return setIsAddInvoiceOpen(false);
+                return seIsSliderOpen(false);
             default:
                 throw Error();
         }
@@ -107,19 +107,19 @@ const AppProvider = ({ children }) => {
         const getTrueFilter = type.filter((item) => item.active === true);
         getTrueFilter.length
             ? setFilterType(getTrueFilter[0].id)
-            : setFilterType('all');
+            : setFilterType('total');
     };
 
     return (
         <AppContext.Provider
             value={{
-                isAddInvoiceOpen,
+                isSliderOpen,
                 isDarkMode,
                 isFilterOpen,
                 getInvoice,
                 getFilterType,
                 handleDarkMode,
-                handleIsAddInvoiceOpen,
+                handleIsSliderOpen,
                 handleFilterOpen,
                 closeFilter,
                 filterType,
