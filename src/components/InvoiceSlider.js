@@ -8,19 +8,22 @@ import InvoiceForm from './InvoiceForm';
 
 const AddInvoiceWrapper = styled.div`
     position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     z-index: 5;
     top: 0;
     transition: 0.5s;
     left: ${({ isSliderOpen }) => (isSliderOpen ? '0' : '-120%')};
-    min-height: 100vh;
     background-color: var(--color-bg-addInvoice);
     border-radius: 0 20px 20px 0;
     padding: 0 0 0 103px;
     width: 750px;
+    height: 100%;
     @media (max-width: 1150px) {
+        height: calc(100% - 80px);
         padding: 0;
         top: 80px;
-        height: calc(100vh - 80px);
     }
     @media (max-width: 768px) {
         width: 100%;

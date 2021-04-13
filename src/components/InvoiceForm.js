@@ -23,6 +23,10 @@ import {
     InvoiceFormTitle,
     ButtonsSave,
     InvoiceButton,
+    InvoiceListLabel,
+    InvoiceListLabelName,
+    InvoiceFormSelect,
+    InvoiceFormSelectOption,
 } from './InvoiceForm.style';
 
 import IconDelete from '../assets/IconDelete';
@@ -30,7 +34,8 @@ import IconDelete from '../assets/IconDelete';
 function InvoiceForm() {
     const { handleIsSliderOpen } = useContext(AppContext);
 
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState([]); //state for itemList
+    const [terms, setTerms] = useState('');
 
     const handleInvoiceAdd = () => {
         setItems([
@@ -45,76 +50,84 @@ function InvoiceForm() {
         ]);
     };
 
+    const handleSort = (e) => {
+        setTerms(e.target.value);
+    };
     return (
         <InvoiceFormWrapper>
             <InvoiceFormTitle>New Invoice</InvoiceFormTitle>
             <InvoiceInputContainer>
                 <InvoiceFormCategory>Bill From</InvoiceFormCategory>
                 <InvoiceFormInputContainer>
-                    <InvoiceFormLabel size={'100%'}>
+                    <InvoiceFormLabel size={100}>
                         Street Address
                         <InvoiceFormInput />
                     </InvoiceFormLabel>
                 </InvoiceFormInputContainer>
                 <InvoiceFormInputContainer>
-                    <InvoiceFormLabel size={'30%'}>
+                    <InvoiceFormLabel size={28}>
                         City
                         <InvoiceFormInput />
                     </InvoiceFormLabel>
-                    <InvoiceFormLabel size={'30%'}>
+                    <InvoiceFormLabel size={28}>
                         Post Code
                         <InvoiceFormInput />
                     </InvoiceFormLabel>
-                    <InvoiceFormLabel size={'30%'}>
+                    <InvoiceFormLabel size={28}>
                         Country
                         <InvoiceFormInput />
                     </InvoiceFormLabel>
                 </InvoiceFormInputContainer>
                 <InvoiceFormCategory>Bill To</InvoiceFormCategory>
                 <InvoiceFormInputContainer>
-                    <InvoiceFormLabel size={'100%'}>
+                    <InvoiceFormLabel size={100}>
                         Client’s Name
                         <InvoiceFormInput />
                     </InvoiceFormLabel>
                 </InvoiceFormInputContainer>
                 <InvoiceFormInputContainer>
-                    <InvoiceFormLabel size={'100%'}>
+                    <InvoiceFormLabel size={100}>
                         Client’s Email
                         <InvoiceFormInput />
                     </InvoiceFormLabel>
                 </InvoiceFormInputContainer>
                 <InvoiceFormInputContainer>
-                    <InvoiceFormLabel size={'100%'}>
+                    <InvoiceFormLabel size={100}>
                         Street Address
                         <InvoiceFormInput />
                     </InvoiceFormLabel>
                 </InvoiceFormInputContainer>
                 <InvoiceFormInputContainer>
-                    <InvoiceFormLabel size={'30%'}>
+                    <InvoiceFormLabel size={28}>
                         City
                         <InvoiceFormInput />
                     </InvoiceFormLabel>
-                    <InvoiceFormLabel size={'30%'}>
+                    <InvoiceFormLabel size={28}>
                         Post Code
                         <InvoiceFormInput />
                     </InvoiceFormLabel>
-                    <InvoiceFormLabel size={'30%'}>
+                    <InvoiceFormLabel size={28}>
                         Country
                         <InvoiceFormInput />
                     </InvoiceFormLabel>
                 </InvoiceFormInputContainer>
                 <InvoiceFormInputContainer select>
-                    <InvoiceFormLabel size={'47.5%'}>
+                    <InvoiceFormLabel size={45}>
                         Invoice Date
                         <InvoiceFormInput type='date' />
                     </InvoiceFormLabel>
-                    <InvoiceFormLabel size={'47.5%'}>
+                    <InvoiceFormLabel size={45}>
                         Payment Terms
-                        <InvoiceFormInput />
+                        <InvoiceFormSelect onChange={handleSort}>
+                            <option value={1}>Net 1 Day</option>
+                            <option value={7}>Net 7 Day</option>
+                            <option value={14}>Net 14 Day</option>
+                            <option value={30}>Net 30 Day</option>
+                        </InvoiceFormSelect>
                     </InvoiceFormLabel>
                 </InvoiceFormInputContainer>
                 <InvoiceFormInputContainer>
-                    <InvoiceFormLabel size={'100%'}>
+                    <InvoiceFormLabel size={100}>
                         Project Description
                         <InvoiceFormInput />
                     </InvoiceFormLabel>
@@ -168,29 +181,45 @@ function InvoiceForm() {
                             setItems(filteredArr);
                         };
                         return (
-                            <ItemListItem>
-                                <InvoiceFormInput
-                                    size={'214px'}
-                                    value={item.name}
-                                    onChange={handleNameInput}
-                                />
-                                <InvoiceFormInput
-                                    onChange={handleQuantityInput}
-                                    size={'60px'}
-                                    type='number'
-                                    value={item.quantity}
-                                />
-                                <InvoiceFormInput
-                                    onChange={handlePriceInput}
-                                    size={'100px'}
-                                    type='number'
-                                    value={item.price}
-                                />
-                                <ItemListNameTotal
-                                    size={'65px'}
-                                    value={item.total}
-                                    disabled='disabled'
-                                />
+                            <ItemListItem key={item.id}>
+                                <InvoiceListLabel size={214}>
+                                    <InvoiceListLabelName>
+                                        Item Name
+                                    </InvoiceListLabelName>
+                                    <InvoiceFormInput
+                                        value={item.name}
+                                        onChange={handleNameInput}
+                                    />
+                                </InvoiceListLabel>
+                                <InvoiceListLabel size={60}>
+                                    <InvoiceListLabelName>
+                                        Qty.
+                                    </InvoiceListLabelName>
+                                    <InvoiceFormInput
+                                        onChange={handleQuantityInput}
+                                        type='number'
+                                        value={item.quantity}
+                                    />
+                                </InvoiceListLabel>
+                                <InvoiceListLabel size={100}>
+                                    <InvoiceListLabelName>
+                                        Price
+                                    </InvoiceListLabelName>
+                                    <InvoiceFormInput
+                                        onChange={handlePriceInput}
+                                        type='number'
+                                        value={item.price}
+                                    />
+                                </InvoiceListLabel>
+                                <InvoiceListLabel size={65}>
+                                    <InvoiceListLabelName>
+                                        Total
+                                    </InvoiceListLabelName>
+                                    <ItemListNameTotal
+                                        value={item.total}
+                                        disabled='disabled'
+                                    />
+                                </InvoiceListLabel>
                                 <DeleteBasket onClick={handleButtonRemove}>
                                     <IconDelete />
                                 </DeleteBasket>

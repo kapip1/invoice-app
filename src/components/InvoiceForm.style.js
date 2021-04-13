@@ -4,10 +4,11 @@ export const InvoiceInputContainer = styled.div`
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
-    height: 720px;
-    padding: 0rem 5rem;
+    height: 75vh;
+    padding: 0 5rem;
     @media (max-width: 576px) {
-        height: 600px;
+        padding: 0 2.5rem;
+        height: 68.5vh;
     }
 `;
 export const InvoiceFormTitle = styled.h2`
@@ -15,10 +16,13 @@ export const InvoiceFormTitle = styled.h2`
     font-size: 2.4rem;
     font-weight: 700;
     padding: 2.5rem 5rem 0 5rem;
+    @media (max-width: 576px) {
+        padding: 2.5rem 2.5rem 1rem 2.5rem;
+    }
 `;
 export const InvoiceFormCategory = styled.span`
     font-size: 1.2rem;
-    margin: 30px 0 10px 0;
+    margin: 20px 0 10px 0;
     font-weight: 700;
     color: #7c5dfa;
 `;
@@ -26,38 +30,76 @@ export const InvoiceFormCategory = styled.span`
 export const InvoiceFormInputContainer = styled.div`
     display: flex;
     margin-top: 15px;
+    flex-wrap: wrap;
     justify-content: space-between;
     ${({ select }) => select && `margin-top: 45px`}
+    @media (max-width: 576px) {
+    }
 `;
 
 export const InvoiceFormLabel = styled.label`
     display: flex;
     color: var(--color-secondary);
     flex-direction: column;
-    width: ${({ size }) => size};
+
+    margin: 5px 5px;
+    width: ${({ size }) => size + '%'};
+    @media (max-width: 576px) {
+        flex-grow: 1;
+        width: ${({ size }) => size * 1.3 + '%'};
+    }
 `;
 
 export const InvoiceFormInput = styled.input`
-    display: flex;
     border-radius: 8px;
     font-size: 1.2rem;
+    margin-top: 9px;
     font-weight: 700;
-    margin-top: 6px;
     background-color: var(--color-inputBackground);
     color: var(--color-primary);
     border: 1px solid var(--color-border-input);
-    padding: 1.8rem 2.5rem;
-    ${({ size }) =>
-        size
-            ? css`
-                  width: ${size};
-                  padding: 0;
-                  height: 48px;
-                  padding: 0 0.8rem;
-              `
-            : null};
+    min-height: 48px;
+    padding: 1.5rem 2rem;
+    &:focus {
+        outline: 1px solid red 8px;
+    }
+`;
+
+export const InvoiceFormSelect = styled.select`
+    margin-top: 9px;
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--color-primary);
+    height: 48px;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-border-input);
+    background-color: var(--color-inputBackground);
     &:focus {
         outline: none;
+    }
+`;
+export const InvoiceFormSelectOption = styled.option``;
+
+export const InvoiceListLabel = styled.label`
+    margin-top: 6px;
+    width: ${({ size }) => size + 'px'};
+    flex-grow: 1;
+    margin: 3px 5px 0 5px;
+    & input {
+        width: 100%;
+    }
+    @media (max-width: 576px) {
+        width: ${({ size }) => (size > 200 ? size * 1.5 + 'px' : size + 'px')};
+    }
+`;
+export const InvoiceListLabelName = styled.span`
+    display: none;
+    color: var(--color-secondary);
+    font-size: 1.2rem;
+    margin-top: 5px;
+    @media (max-width: 576px) {
+        display: inline-block;
     }
 `;
 
@@ -91,8 +133,11 @@ export const ItemListHeaderName = styled.span`
 export const ItemListItem = styled.li`
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
+    margin-bottom: 30px;
     align-items: center;
+    @media (max-width: 576px) {
+        flex-wrap: wrap;
+    }
 `;
 
 export const ItemListNameTotal = styled(InvoiceFormInput)`
@@ -119,6 +164,7 @@ export const ItemListButton = styled.button`
 
 export const DeleteBasket = styled.button`
     cursor: pointer;
+    background-color: transparent;
     width: 13px;
     height: 16px;
     & svg {
@@ -133,26 +179,33 @@ export const DeleteBasket = styled.button`
 
 export const InvoiceFormWrapper = styled.div`
     display: flex;
-    height: 100vh;
     flex-direction: column;
+    height: 100%;
     justify-content: space-around;
 `;
 
 export const ButtonsContainer = styled.div`
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    padding: 1rem 5rem;
+    width: 100%;
+    padding: 1rem;
+    padding: 2.5rem 5rem 0 5rem;
+    @media (max-width: 576px) {
+        padding: 0.5rem;
+    }
 `;
 
 export const ButtonsSave = styled.div`
     display: flex;
     justify-content: space-between;
-    width: 285px;
+    width: 245px;
 `;
 
 export const InvoiceButton = styled.button`
     border-radius: 24px;
     padding: 2rem;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: 0.2s;
     font-weight: 700;

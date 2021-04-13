@@ -17,13 +17,16 @@ const InvoicesListWrapper = styled.ul`
 
 const InvoiceLink = styled.li`
     display: flex;
-    border: 0px solid #7c5dfa;
+    transition: 0.2s;
     font-size: 1.2rem;
     margin-top: 20px;
     background-color: var(--color-background-invoice-link);
     box-shadow: 0px 10px 10px -10px rgba(72, 84, 159, 0.100397);
     border-radius: 8px;
-
+    border: 1px solid var(--color-background-invoice-link);
+    &:hover {
+        border: 1px solid rgb(124, 93, 250);
+    }
     a {
         display: flex;
         align-items: center;
