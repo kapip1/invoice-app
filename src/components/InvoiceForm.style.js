@@ -32,7 +32,11 @@ export const InvoiceFormInputContainer = styled.div`
     margin-top: 15px;
     flex-wrap: wrap;
     justify-content: space-between;
-    ${({ select }) => select && `margin-top: 45px`}
+    ${({ select }) =>
+        select &&
+        css`
+            margin-top: 45px;
+        `}
     @media (max-width: 576px) {
     }
 `;
@@ -44,6 +48,14 @@ export const InvoiceFormLabel = styled.label`
 
     margin: 5px 5px;
     width: ${({ size }) => size + '%'};
+    ${({ error }) =>
+        error &&
+        css`
+            & input {
+                border: 1px solid #ec5757;
+            }
+        `};
+
     @media (max-width: 576px) {
         flex-grow: 1;
         width: ${({ size }) => size * 1.3 + '%'};
@@ -55,13 +67,20 @@ export const InvoiceFormInput = styled.input`
     font-size: 1.2rem;
     margin-top: 9px;
     font-weight: 700;
+    transition: 0.2s;
     background-color: var(--color-inputBackground);
     color: var(--color-primary);
     border: 1px solid var(--color-border-input);
     min-height: 48px;
     padding: 1.5rem 2rem;
+    ${({ qty }) =>
+        qty &&
+        css`
+            padding: 1.5rem 1rem;
+        `};
     &:focus {
-        outline: 1px solid red 8px;
+        outline: none;
+        border: 1px solid #9277ff;
     }
 `;
 
@@ -80,6 +99,12 @@ export const InvoiceFormSelect = styled.select`
     }
 `;
 export const InvoiceFormSelectOption = styled.option``;
+
+export const DeleteButtonContainer = styled.div`
+    display: flex;
+    height: 60px;
+    align-items: center;
+`;
 
 export const InvoiceListLabel = styled.label`
     margin-top: 6px;
@@ -177,7 +202,7 @@ export const DeleteBasket = styled.button`
     }
 `;
 
-export const InvoiceFormWrapper = styled.div`
+export const InvoiceFormWrapper = styled.form`
     display: flex;
     flex-direction: column;
     height: 100%;

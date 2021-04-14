@@ -97,7 +97,7 @@ const AppProvider = ({ children }) => {
         }
     };
     const getInvoice = (invoice) => {
-        setData([...data, { ...invoice }]);
+        console.log(invoice);
     };
     const changeData = (newData) => {
         setData(newData);
@@ -110,6 +110,7 @@ const AppProvider = ({ children }) => {
             : setFilterType('total');
     };
 
+    console.log(data);
     return (
         <AppContext.Provider
             value={{
