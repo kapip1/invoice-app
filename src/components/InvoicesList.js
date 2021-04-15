@@ -115,8 +115,8 @@ function InvoicesList() {
                     <span>#</span>
                     {invoice.id}
                 </InvoiceLinkNumber>
-                <InvoiceName>{invoice.name}</InvoiceName>
-                <InvoiceDate>{invoice.date}</InvoiceDate>
+                <InvoiceName>{invoice.clientName}</InvoiceName>
+                <InvoiceDate>{invoice.paymentDue}</InvoiceDate>
                 <InvoicePrice>
                     <NumberFormat
                         value={invoice.price}

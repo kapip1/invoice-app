@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 import styled, { css } from 'styled-components';
 
 import { AppContext } from '../AppContext';
-import AddInvoiceForm from './AddInvoiceForm';
 import InvoiceForm from './InvoiceForm';
 
 const AddInvoiceWrapper = styled.div`
@@ -56,8 +55,7 @@ function InvoiceSlider() {
     return (
         <>
             <AddInvoiceWrapper isSliderOpen={isSliderOpen}>
-                {/* <AddInvoiceForm /> */}
-                <InvoiceForm />
+                {isSliderOpen ? <InvoiceForm /> : null}
             </AddInvoiceWrapper>
             <AddInvoiceBg
                 isSliderOpen={isSliderOpen}

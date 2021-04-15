@@ -1,64 +1,32 @@
 import React, { useState, createContext } from 'react';
 
-import { invoiceNumber } from './logic/InvoiceNumber';
-
 export const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
-    const event = new Date();
     const defData = [
         {
-            id: 'KD3412',
-            name: 'Jakub Negro',
-            price: '1300',
-            status: 'paid',
-            date: event.toDateString(),
-            list: [
-                {
-                    id: 2,
-                    name: 'telefon iphone 11 pro',
-                    price: 3233,
-                    quantity: 32323,
-                    total: 6699,
-                },
-            ],
-        },
-        {
-            id: 'XD3421',
-            name: 'Kacper Nowak',
-            price: '6300',
+            id: 'EQ3214',
+            price: '172',
+            cityFrom: 'Berlin',
+            streetAddresFrom: 'Himlera 32',
+            postCodeFrom: '32-433',
+            countryFrom: 'Niemcy',
+            clientName: 'Kaper',
+            clientEmail: 'dropienie034@wp.pl',
             status: 'pending',
-            date: event.toDateString(),
+            paymentDue: '32-323-43',
+            streetAddressTo: 'Jarecka 32',
+            cityTo: 'Katowice',
+            postCodeTo: '40-322',
+            countryTo: 'Poland',
+            projectDescription: 'simple project',
             list: [
                 {
-                    id: 3,
-                    name: 'telefon iphone 11 pro',
-                    price: 3233,
-                    quantity: 3,
-                    total: 6699,
-                },
-                {
-                    id: 4,
-                    name: 'telefon iphone 12 pro',
-                    price: 4233,
-                    quantity: 2,
-                    total: 8466,
-                },
-            ],
-        },
-        {
-            id: 'ED5432',
-            name: 'Tomasz Jaro',
-            price: '3300',
-            status: 'draft',
-            date: event.toDateString(),
-            list: [
-                {
-                    id: 1,
-                    name: 'telefon iphone 11 pro',
-                    price: 3233,
-                    quantity: 23233,
-                    total: 9699,
+                    id: 32,
+                    name: 'kusz',
+                    price: 43,
+                    quantity: 4,
+                    total: 172,
                 },
             ],
         },
@@ -69,6 +37,7 @@ const AppProvider = ({ children }) => {
     const [filterType, setFilterType] = useState('total');
     const [isSliderOpen, seIsSliderOpen] = useState(false);
     const [data, setData] = useState(defData);
+    const [edit, setEdit] = useState([]);
 
     const handleDarkMode = () => {
         setIsDarkMode((prev) => !prev);
@@ -78,7 +47,9 @@ const AppProvider = ({ children }) => {
             case 'toggle':
                 return setIsFilterOpen((prev) => !prev);
             case 'close':
-                return setIsFilterOpen(false);
+                setIsFilterOpen(false);
+                setEdit([]);
+                break;
             default:
                 throw Error();
         }
@@ -86,18 +57,26 @@ const AppProvider = ({ children }) => {
     const closeFilter = () => {
         setIsFilterOpen(false);
     };
-    const handleIsSliderOpen = (arg) => {
+    const handleIsSliderOpen = (arg, editInvoice) => {
         switch (arg) {
-            case 'open':
+            case 'openAdd':
                 return seIsSliderOpen(true);
+            case 'openEdit':
+                seIsSliderOpen(true);
+                setEdit(editInvoice);
+                break;
             case 'close':
-                return seIsSliderOpen(false);
+                console.log('close');
+                seIsSliderOpen(false);
+                setEdit([]);
+                break;
             default:
                 throw Error();
         }
     };
     const getInvoice = (invoice) => {
-        console.log(invoice);
+        setData([...data, invoice]);
+        console.log([...data, invoice]);
     };
     const changeData = (newData) => {
         setData(newData);
@@ -110,7 +89,6 @@ const AppProvider = ({ children }) => {
             : setFilterType('total');
     };
 
-    console.log(data);
     return (
         <AppContext.Provider
             value={{
@@ -126,6 +104,7 @@ const AppProvider = ({ children }) => {
                 filterType,
                 data,
                 changeData,
+                edit,
             }}
         >
             {children}

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
 import { useFormik } from 'formik';
@@ -30,21 +30,33 @@ import {
     InvoiceListLabel,
     InvoiceListLabelName,
     InvoiceFormSelect,
-    InvoiceFormSelectOption,
     DeleteButtonContainer,
 } from './InvoiceForm.style';
 
 import IconDelete from '../assets/IconDelete';
 
 function InvoiceForm() {
-    const { handleIsSliderOpen, getInvoice } = useContext(AppContext);
+    const {
+        handleIsSliderOpen,
+        getInvoice,
+        edit,
+        changeData,
+        data,
+    } = useContext(AppContext);
 
     const event = new Date();
 
+    useEffect(() => {
+        if (edit.id) {
+            setItems([...edit.list]);
+        }
+        return () => {};
+        // eslint-disable-next-line
+    }, []);
+
     const [items, setItems] = useState([]); //state for itemList
-    const [terms, setTerms] = useState('');
+    const [terms, setTerms] = useState(1);
     const [date, setDate] = useState(event.toISOString().replace(/T.*/, ''));
-    const [paymentTerms, setPaymentTerms] = useState();
 
     const validate = (values) => {
         const errors = {};
@@ -97,48 +109,114 @@ function InvoiceForm() {
 
         return errors;
     };
+    const formikDef = () => {
+        if (edit.id) {
+            return {
+                streetAddresFrom: edit.streetAddresFrom,
+                cityFrom: edit.cityFrom,
+                postCodeFrom: edit.postCodeFrom,
+                countryFrom: edit.countryFrom,
+                clientName: edit.clientName,
+                clientEmail: edit.clientEmail,
+                streetAddressTo: edit.streetAddressTo,
+                cityTo: edit.cityTo,
+                postCodeTo: edit.postCodeTo,
+                countryTo: edit.countryTo,
+                projectDescription: edit.projectDescription,
+            };
+        } else {
+            return {
+                streetAddresFrom: '',
+                cityFrom: '',
+                postCodeFrom: '',
+                countryFrom: '',
+                clientName: '',
+                clientEmail: '',
+                streetAddressTo: '',
+                cityTo: '',
+                postCodeTo: '',
+                countryTo: '',
+                projectDescription: '',
+            };
+        }
+    };
 
     const formik = useFormik({
-        initialValues: {
-            streetAddresFrom: '',
-            cityFrom: '',
-            postCodeFrom: '',
-            countryFrom: '',
-            clientName: '',
-            status: 'pending',
-            clientEmail: '',
-            streetAddressTo: '',
-            cityTo: '',
-            postCodeTo: '',
-            countryTo: '',
-            projectDescription: '',
-        },
+        enableReinitialize: true,
+        initialValues: formikDef(),
         validate,
         onSubmit: (values, { resetForm }) => {
-            console.log(formik.errors, 'e');
-            alert(JSON.stringify(values, null, 2));
-            getInvoice({
-                id: invoiceNumber(),
-                price: '',
-                streetAddresFrom: values.streetAddresFrom,
-                postCode: values.postCodeTo,
-                countryFrom: values.countryFrom,
-                clientName: values.clientName,
-                clientEmail: values.clientEmail,
-                paymentDue: '',
-                streetAddressTo: values.streetAddressTo,
-                cityTo: values.cityTo,
-                postCodeTo: values.postCodeTo,
-                countryTo: values.countryTo,
-                projectDescription: values.projectDescription,
-                list: [...items],
-            });
-            resetForm();
-            setItems([]);
+            if (edit.id) {
+                const copyData = [...data];
+                const index = copyData.findIndex((item) => item.id === edit.id);
+                copyData[index] = {
+                    id: edit.id,
+                    price: getTotalValue(),
+                    status: 'pending',
+                    cityFrom: values.cityFrom,
+                    streetAddresFrom: values.streetAddresFrom,
+                    postCodeFrom: values.postCodeFrom,
+                    countryFrom: values.countryFrom,
+                    clientName: values.clientName,
+                    clientEmail: values.clientEmail,
+                    paymentDue: getDate().paymentDue,
+                    invoiceDate: getDate().invoiceDate,
+                    streetAddressTo: values.streetAddressTo,
+                    cityTo: values.cityTo,
+                    postCodeTo: values.postCodeTo,
+                    countryTo: values.countryTo,
+                    projectDescription: values.projectDescription,
+                    terms,
+                    list: [...items],
+                };
+                changeData(copyData);
+            } else {
+                getInvoice({
+                    id: invoiceNumber(),
+                    price: getTotalValue(),
+                    status: 'pending',
+                    cityFrom: values.cityFrom,
+                    streetAddresFrom: values.streetAddresFrom,
+                    postCodeFrom: values.postCodeFrom,
+                    countryFrom: values.countryFrom,
+                    clientName: values.clientName,
+                    clientEmail: values.clientEmail,
+                    paymentDue: getDate().paymentDue,
+                    invoiceDate: getDate().invoiceDate,
+                    streetAddressTo: values.streetAddressTo,
+                    cityTo: values.cityTo,
+                    postCodeTo: values.postCodeTo,
+                    countryTo: values.countryTo,
+                    projectDescription: values.projectDescription,
+                    terms,
+                    list: [...items],
+                });
+                resetForm();
+                setItems([]);
+                setTerms(1);
+                setDate(event.toISOString().replace(/T.*/, ''));
+            }
         },
     });
     const getTotalValue = () => {
-        // const totalPrice =
+        const totalArr = items.map((item) => item.total);
+        let totalPrice = 0;
+        totalArr.forEach((item) => (totalPrice += item));
+        return totalPrice;
+    };
+    const getDate = () => {
+        const invoiceDate = new Date(date);
+        const sumPaymentDue = invoiceDate.getTime() + 86400000 * terms;
+        const paymenDue = new Date(sumPaymentDue);
+
+        return {
+            paymentDue: paymenDue.toDateString(),
+            invoiceDate: invoiceDate.toDateString(),
+        };
+    };
+
+    const handleTermsSelect = (e) => {
+        setTerms(e.target.value);
     };
 
     const handleInvoiceAdd = () => {
@@ -335,7 +413,10 @@ function InvoiceForm() {
                     </InvoiceFormLabel>
                     <InvoiceFormLabel size={45}>
                         Payment Terms
-                        <InvoiceFormSelect>
+                        <InvoiceFormSelect
+                            value={terms}
+                            onChange={handleTermsSelect}
+                        >
                             <option value={1}>Net 1 Day</option>
                             <option value={7}>Net 7 Day</option>
                             <option value={14}>Net 14 Day</option>
@@ -473,13 +554,15 @@ function InvoiceForm() {
                     Discard
                 </InvoiceButton>
                 <ButtonsSave>
-                    <InvoiceButton
-                        colorBg={'#373B53'}
-                        colorFont={'var(--color-totalPrice)'}
-                        type='button'
-                    >
-                        Save as Draft
-                    </InvoiceButton>
+                    {edit.id ? null : (
+                        <InvoiceButton
+                            colorBg={'#373B53'}
+                            colorFont={'var(--color-totalPrice)'}
+                            type='button'
+                        >
+                            Save as Draft
+                        </InvoiceButton>
+                    )}
                     <InvoiceButton
                         colorBg={'#7C5DFA'}
                         colorFont={'#FFF'}

@@ -53,7 +53,7 @@ function Invoice({ match }) {
     );
 
     const handleEditBtn = () => {
-        handleIsSliderOpen('open');
+        handleIsSliderOpen('openEdit', currentInvoice[0]);
     };
     const isAlertToggle = () => {
         setIsAlert((prev) => !prev);
@@ -136,17 +136,24 @@ function Invoice({ match }) {
                                             {currentInvoice[0].id}
                                         </InvoiceNumber>
                                         <TextSecondary>
-                                            Graphic Design
+                                            {
+                                                currentInvoice[0]
+                                                    .projectDescription
+                                            }
                                         </TextSecondary>
                                     </BillItem>
                                     <BillItem>
                                         <TextSecondary>
-                                            19 Union Terrace
+                                            {currentInvoice[0].streetAddresFrom}
                                         </TextSecondary>
-                                        <TextSecondary>London</TextSecondary>
-                                        <TextSecondary>E1 3EZ</TextSecondary>
                                         <TextSecondary>
-                                            United Kingdom
+                                            {currentInvoice[0].cityFrom}
+                                        </TextSecondary>
+                                        <TextSecondary>
+                                            {currentInvoice[0].postCodeFrom}
+                                        </TextSecondary>
+                                        <TextSecondary>
+                                            {currentInvoice[0].countryFrom}
                                         </TextSecondary>
                                     </BillItem>
                                 </BillHeader>
@@ -156,33 +163,37 @@ function Invoice({ match }) {
                                             Invoice Date
                                         </TextSecondary>
                                         <TextPrimaryLarge>
-                                            21 Aug 2021
+                                            {currentInvoice[0].invoiceDate}
                                         </TextPrimaryLarge>
                                         <TextSecondary>
                                             Payment Due
                                         </TextSecondary>
                                         <TextPrimaryLarge>
-                                            20 Sep 2021
+                                            {currentInvoice[0].paymentDue}
                                         </TextPrimaryLarge>
                                     </BillItem>
                                     <BillItem>
                                         <TextSecondary>Bill To</TextSecondary>
                                         <TextPrimaryLarge>
-                                            {currentInvoice[0].name}
+                                            {currentInvoice[0].clientName}
                                         </TextPrimaryLarge>
                                         <TextSecondary>
-                                            84 Church Way
+                                            {currentInvoice[0].streetAddressTo}
                                         </TextSecondary>
-                                        <TextSecondary>Bradford</TextSecondary>
-                                        <TextSecondary>BD1 9PB</TextSecondary>
                                         <TextSecondary>
-                                            United Kingdom
+                                            {currentInvoice[0].cityTo}
+                                        </TextSecondary>
+                                        <TextSecondary>
+                                            {currentInvoice[0].postCodeTo}
+                                        </TextSecondary>
+                                        <TextSecondary>
+                                            {currentInvoice[0].countryTo}
                                         </TextSecondary>
                                     </BillItem>
                                     <BillItem>
                                         <TextSecondary>Sent to</TextSecondary>
                                         <TextPrimaryLarge>
-                                            alexgrim@mail.com
+                                            {currentInvoice[0].clientEmail}
                                         </TextPrimaryLarge>
                                     </BillItem>
                                 </BillMain>

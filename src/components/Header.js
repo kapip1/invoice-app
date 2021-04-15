@@ -267,7 +267,7 @@ function Header() {
                         ))}
                     </HeaderList>
                 </HeaderFilterWrapper>
-                <HeaderButton onClick={() => handleIsSliderOpen('open')}>
+                <HeaderButton onClick={() => handleIsSliderOpen('openAdd')}>
                     <img src={iconAdd} alt='add icon' /> New{' '}
                     <span> Invoice</span>
                 </HeaderButton>
