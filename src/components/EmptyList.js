@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import styled from 'styled-components';
+
+import { AppContext } from '../AppContext';
 
 import ilustration from '../assets/illustration-empty.svg';
 
@@ -28,16 +30,25 @@ const EmptyListText = styled.p`
     width: 80%;
     max-width: 240px;
     color: var(--color-secondary);
+    & span {
+        font-weight: 700;
+        cursor: pointer;
+    }
 `;
 
 function EmptyList() {
+    const { handleIsSliderOpen } = useContext(AppContext);
+
     return (
         <EmptyListWrapper>
             <img src={ilustration} alt='' />
             <EmptyListTitle>There is nothing here</EmptyListTitle>
             <EmptyListText>
-                Create an invoice by clicking the New Invoice button and get
-                started
+                Create an invoice by clicking the{' '}
+                <span onClick={() => handleIsSliderOpen('openAdd')}>
+                    New Invoice
+                </span>{' '}
+                button and get started
             </EmptyListText>
         </EmptyListWrapper>
     );

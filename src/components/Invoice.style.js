@@ -199,13 +199,12 @@ export const ItemTextSecondary = styled.p`
     font-size: 1.2rem;
     & span.qty {
         display: none;
-        margin-left: 5px;
         @media (max-width: 576px) {
             display: inline-block;
         }
     }
 `;
-//----
+
 export const ItemTextPrimary = styled.p`
     color: var(--color-primary);
     font-size: 1.2rem;

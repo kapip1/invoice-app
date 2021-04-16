@@ -31,6 +31,7 @@ import {
     InvoiceListLabelName,
     InvoiceFormSelect,
     DeleteButtonContainer,
+    ErrorMassage,
 } from './InvoiceForm.style';
 
 import IconDelete from '../assets/IconDelete';
@@ -48,9 +49,16 @@ function InvoiceForm() {
 
     useEffect(() => {
         if (edit.id) {
+            const editTime = new Date(edit.dateMs);
             setItems([...edit.list]);
+            setTerms(edit.terms);
+            setDate(editTime.toISOString().replace(/T.*/, ''));
         }
-        return () => {};
+        return () => {
+            setItems([]);
+            setTerms();
+            setDate(event.toISOString().replace(/T.*/, ''));
+        };
         // eslint-disable-next-line
     }, []);
 
@@ -58,53 +66,60 @@ function InvoiceForm() {
     const [terms, setTerms] = useState(1);
     const [date, setDate] = useState(event.toISOString().replace(/T.*/, ''));
 
+    const [draft, setDraft] = useState(false);
+
     const validate = (values) => {
         const errors = {};
+        if (!draft) {
+            if (!values.streetAddresFrom) {
+                errors.streetAddresFrom = 'Required';
+            } else if (values.streetAddresFrom.length < 3) {
+                errors.streetAddresFrom = 'Must be 3 characters or more';
+            }
 
-        if (!values.streetAddresFrom) {
-            errors.streetAddresFrom = 'Required';
-        } else if (values.streetAddresFrom.length < 3) {
-            errors.streetAddresFrom = 'Must be 3 characters or more';
-        }
+            if (!items.length) {
+                errors.items = 'Required';
+            }
 
-        if (!values.cityFrom) {
-            errors.cityFrom = 'Required';
-        }
+            if (!values.cityFrom) {
+                errors.cityFrom = 'Required';
+            }
 
-        if (!values.postCodeFrom) {
-            errors.postCodeFrom = 'Required';
-        }
+            if (!values.postCodeFrom) {
+                errors.postCodeFrom = 'Required';
+            }
 
-        if (!values.countryFrom) {
-            errors.countryFrom = 'Required';
-        }
+            if (!values.countryFrom) {
+                errors.countryFrom = 'Required';
+            }
 
-        if (!values.clientName) {
-            errors.clientName = 'Required';
-        }
+            if (!values.clientName) {
+                errors.clientName = 'Required';
+            }
 
-        if (!values.clientEmail) {
-            errors.clientEmail = 'Required';
-        }
+            if (!values.clientEmail) {
+                errors.clientEmail = 'Required';
+            }
 
-        if (!values.streetAddressTo) {
-            errors.streetAddressTo = 'Required';
-        }
+            if (!values.streetAddressTo) {
+                errors.streetAddressTo = 'Required';
+            }
 
-        if (!values.cityTo) {
-            errors.cityTo = 'Required';
-        }
+            if (!values.cityTo) {
+                errors.cityTo = 'Required';
+            }
 
-        if (!values.postCodeTo) {
-            errors.postCodeTo = 'Required';
-        }
+            if (!values.postCodeTo) {
+                errors.postCodeTo = 'Required';
+            }
 
-        if (!values.countryTo) {
-            errors.countryTo = 'Required';
-        }
+            if (!values.countryTo) {
+                errors.countryTo = 'Required';
+            }
 
-        if (!values.projectDescription) {
-            errors.projectDescription = 'Required';
+            if (!values.projectDescription) {
+                errors.projectDescription = 'Required';
+            }
         }
 
         return errors;
@@ -165,16 +180,18 @@ function InvoiceForm() {
                     cityTo: values.cityTo,
                     postCodeTo: values.postCodeTo,
                     countryTo: values.countryTo,
+                    dateMs: getDate().dateMs,
                     projectDescription: values.projectDescription,
-                    terms,
+                    terms: terms,
                     list: [...items],
                 };
                 changeData(copyData);
+                handleIsSliderOpen('close');
             } else {
                 getInvoice({
                     id: invoiceNumber(),
                     price: getTotalValue(),
-                    status: 'pending',
+                    status: getStatus(),
                     cityFrom: values.cityFrom,
                     streetAddresFrom: values.streetAddresFrom,
                     postCodeFrom: values.postCodeFrom,
@@ -189,10 +206,12 @@ function InvoiceForm() {
                     countryTo: values.countryTo,
                     projectDescription: values.projectDescription,
                     terms,
+                    dateMs: getDate().dateMs,
                     list: [...items],
                 });
                 resetForm();
                 setItems([]);
+                handleIsSliderOpen('close');
                 setTerms(1);
                 setDate(event.toISOString().replace(/T.*/, ''));
             }
@@ -202,14 +221,22 @@ function InvoiceForm() {
         const totalArr = items.map((item) => item.total);
         let totalPrice = 0;
         totalArr.forEach((item) => (totalPrice += item));
-        return totalPrice;
+        return totalPrice ? totalPrice : '';
     };
+    const getStatus = () => {
+        if (draft) {
+            return 'draft';
+        }
+        return 'pending';
+    };
+
     const getDate = () => {
         const invoiceDate = new Date(date);
         const sumPaymentDue = invoiceDate.getTime() + 86400000 * terms;
         const paymenDue = new Date(sumPaymentDue);
 
         return {
+            dateMs: invoiceDate.getTime(),
             paymentDue: paymenDue.toDateString(),
             invoiceDate: invoiceDate.toDateString(),
         };
@@ -233,7 +260,16 @@ function InvoiceForm() {
     };
     return (
         <InvoiceFormWrapper onSubmit={formik.handleSubmit}>
-            <InvoiceFormTitle>New Invoice</InvoiceFormTitle>
+            <InvoiceFormTitle onClick={() => console.log(formik.errors)}>
+                {edit.id ? (
+                    <>
+                        Edit <span>#</span>
+                        {edit.id}
+                    </>
+                ) : (
+                    'New Invoice'
+                )}
+            </InvoiceFormTitle>
             <InvoiceInputContainer>
                 <InvoiceFormCategory>Bill From</InvoiceFormCategory>
                 <InvoiceFormInputContainer>
@@ -327,6 +363,7 @@ function InvoiceForm() {
                     >
                         Client’s Email
                         <InvoiceFormInput
+                            placeholder={'e.g. email@example.com'}
                             name='clientEmail'
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
@@ -435,6 +472,7 @@ function InvoiceForm() {
                         Project Description
                         <InvoiceFormInput
                             name='projectDescription'
+                            placeholder={'e.g. Graphic Design Service'}
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
                             value={formik.values.projectDescription}
@@ -500,7 +538,7 @@ function InvoiceForm() {
                                         onChange={handleNameInput}
                                     />
                                 </InvoiceListLabel>
-                                <InvoiceListLabel size={70}>
+                                <InvoiceListLabel size={60}>
                                     <InvoiceListLabelName>
                                         Qty.
                                     </InvoiceListLabelName>
@@ -543,22 +581,24 @@ function InvoiceForm() {
                         + Add New Item
                     </ItemListButton>
                 </ItemList>
+                <ErrorMassage></ErrorMassage>
             </InvoiceInputContainer>
-            <ButtonsContainer>
+            <ButtonsContainer edit={edit.id}>
                 <InvoiceButton
-                    colorFont={'#7E88C3'}
-                    colorBg={'#F9FAFE'}
                     onClick={() => handleIsSliderOpen('close')}
                     type='button'
+                    colorFont={'var(--color-buttonFont)'}
+                    colorBg={'var(--color-buttonForm)'}
                 >
-                    Discard
+                    {edit.id ? 'Cancel' : 'Discard'}
                 </InvoiceButton>
                 <ButtonsSave>
                     {edit.id ? null : (
                         <InvoiceButton
                             colorBg={'#373B53'}
                             colorFont={'var(--color-totalPrice)'}
-                            type='button'
+                            onClick={() => setDraft(true)}
+                            type='submit'
                         >
                             Save as Draft
                         </InvoiceButton>
@@ -568,7 +608,7 @@ function InvoiceForm() {
                         colorFont={'#FFF'}
                         type='submit'
                     >
-                        Save & Send
+                        {edit.id ? 'Save Changes' : 'Save & Send'}
                     </InvoiceButton>
                 </ButtonsSave>
             </ButtonsContainer>

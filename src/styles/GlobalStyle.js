@@ -5,17 +5,6 @@ import { createGlobalStyle } from 'styled-components';
 import { AppContext } from '../AppContext';
 
 const Styles = createGlobalStyle`
-     /* Primary colorLight theme:  hsl(228, 29%, 7%*/
-     /* Secondary colorLight theme: hsl(231°, 37%, 63%) */
-     /* 
-
-     */
-     /*
-    breakpoints 
-    desktop: 1150,
-    tablet: 768,
-    phone: 576, */
-
     :root {
         --color-primary: ${({ isDarkMode }) =>
             isDarkMode ? '#fff' : 'hsl(228, 29%, 7%)'} ;
@@ -37,8 +26,10 @@ const Styles = createGlobalStyle`
             isDarkMode ? 'hsl(231, 20%, 61%)' : 'hsl(231, 73%, 93%)'};
         --color-inputBackground: ${({ isDarkMode }) =>
             isDarkMode ? '#1E2139' : '#F9FAFE'};
-        --color-buttonForm: ${({ isDarkMode }) =>
-            isDarkMode ? '#252945' : '#F9FAFE'};
+       --color-buttonForm: ${({ isDarkMode }) =>
+           isDarkMode ? '#252945' : '#F9FAFE'}; 
+        --color-buttonFont: ${({ isDarkMode }) =>
+            isDarkMode ? '#dfe3fa' : '#7e88c3'};
     }
     *, ::after, ::before{
         margin: 0;
@@ -55,12 +46,11 @@ const Styles = createGlobalStyle`
             isDarkMode ? 'hsl(233, 30%, 11%)' : '#F8F8FB'};
     }
     button:focus {
-        outline:0;
+        outline: none;
     }
     button {
         border: none;
     }
-
 `;
 
 function GlobalStyle() {

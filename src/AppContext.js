@@ -1,32 +1,66 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useEffect } from 'react';
 
 export const AppContext = createContext();
+
+const LOCAL_STORAGE = 'invoiceList';
 
 const AppProvider = ({ children }) => {
     const defData = [
         {
             id: 'EQ3214',
-            price: '172',
+            price: 172,
             cityFrom: 'Berlin',
-            streetAddresFrom: 'Himlera 32',
+            streetAddresFrom: 'Bluew 32',
             postCodeFrom: '32-433',
-            countryFrom: 'Niemcy',
-            clientName: 'Kaper',
-            clientEmail: 'dropienie034@wp.pl',
+            countryFrom: 'Germany',
+            clientName: 'Kacper',
+            clientEmail: 'ghlobaleez@gmail.com',
             status: 'pending',
-            paymentDue: '32-323-43',
+            paymentDue: 'Sun Apr 11 2021',
+            invoiceDate: 'Sun Apr 04 2021',
             streetAddressTo: 'Jarecka 32',
+            terms: 7,
+            dateMs: 1617578886905,
             cityTo: 'Katowice',
             postCodeTo: '40-322',
             countryTo: 'Poland',
-            projectDescription: 'simple project',
+            projectDescription: 'simple web service',
             list: [
                 {
                     id: 32,
-                    name: 'kusz',
+                    name: 'web service',
                     price: 43,
                     quantity: 4,
                     total: 172,
+                },
+            ],
+        },
+        {
+            id: 'XQ5234',
+            price: 1000,
+            cityFrom: 'Warsaw',
+            streetAddresFrom: 'Marszalkowska 32',
+            postCodeFrom: '04-433',
+            countryFrom: 'Poland',
+            clientName: 'John',
+            clientEmail: 'johnxe@icloud.com',
+            status: 'paid',
+            paymentDue: 'Sun Sep 13 2017',
+            invoiceDate: 'Sun Sep 10 2017',
+            streetAddressTo: 'Jarecka 32',
+            terms: 1,
+            dateMs: 1507578886905,
+            cityTo: 'Chorzow',
+            postCodeTo: '43-322',
+            countryTo: 'Poland',
+            projectDescription: 'web design',
+            list: [
+                {
+                    id: 642,
+                    name: 'web design',
+                    price: 1000,
+                    quantity: 1,
+                    total: 1000,
                 },
             ],
         },
@@ -39,9 +73,19 @@ const AppProvider = ({ children }) => {
     const [data, setData] = useState(defData);
     const [edit, setEdit] = useState([]);
 
+    useEffect(() => {
+        const invoicesStorage = JSON.parse(localStorage.getItem(LOCAL_STORAGE));
+        setData(invoicesStorage);
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem(LOCAL_STORAGE, JSON.stringify(data));
+    }, [data]);
+
     const handleDarkMode = () => {
         setIsDarkMode((prev) => !prev);
     };
+
     const handleFilterOpen = (arg) => {
         switch (arg) {
             case 'toggle':
@@ -54,9 +98,11 @@ const AppProvider = ({ children }) => {
                 throw Error();
         }
     };
+
     const closeFilter = () => {
         setIsFilterOpen(false);
     };
+
     const handleIsSliderOpen = (arg, editInvoice) => {
         switch (arg) {
             case 'openAdd':
@@ -66,7 +112,6 @@ const AppProvider = ({ children }) => {
                 setEdit(editInvoice);
                 break;
             case 'close':
-                console.log('close');
                 seIsSliderOpen(false);
                 setEdit([]);
                 break;
@@ -74,10 +119,11 @@ const AppProvider = ({ children }) => {
                 throw Error();
         }
     };
+
     const getInvoice = (invoice) => {
         setData([...data, invoice]);
-        console.log([...data, invoice]);
     };
+
     const changeData = (newData) => {
         setData(newData);
     };

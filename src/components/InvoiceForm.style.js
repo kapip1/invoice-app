@@ -16,6 +16,9 @@ export const InvoiceFormTitle = styled.h2`
     font-size: 2.4rem;
     font-weight: 700;
     padding: 2.5rem 5rem 0 5rem;
+    & span {
+        color: #888eb0;
+    }
     @media (max-width: 576px) {
         padding: 2.5rem 2.5rem 1rem 2.5rem;
     }
@@ -216,6 +219,15 @@ export const ButtonsContainer = styled.div`
     width: 100%;
     padding: 1rem;
     padding: 2.5rem 5rem 0 5rem;
+    ${({ edit }) =>
+        edit &&
+        css`
+            justify-content: flex-end;
+            & div {
+                width: 150px;
+                justify-content: flex-end;
+            }
+        `}
     @media (max-width: 576px) {
         padding: 0.5rem;
     }
@@ -241,4 +253,9 @@ export const InvoiceButton = styled.button`
     &:hover {
         opacity: 0.7;
     }
+`;
+
+export const ErrorMassage = styled.div`
+    display: flex;
+    color: #ec5757; ;
 `;
